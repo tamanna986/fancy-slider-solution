@@ -156,26 +156,3 @@ function loading() {
     loadingSpinner.classList.toggle("d-none");
     imagesArea.hidden = !imagesArea.hidden;
 }
-
-// Auto Suggest Simmiliar Keywords when searching on searchbar
-var my_autoComplete = new autoComplete({
-  selector: searchForm.search,
-  source: (term, suggest) => {
-    fetch(
-      `https://pixabay.com/api/?key=${KEY}&q=${term}&image_type=photo&pretty=true`
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const stringArr = data.hits
-          .map((hit) => hit.tags)
-          .reduce((acc, curr) => {
-            let tags = curr.split(",");
-            return acc.concat(tags);
-          }, []);
-        suggest([...new Set(stringArr)]);
-      })
-      .catch((err) => {
-        console.log("OH Sheet! Error happened " + err);
-      });
-  },
-});
